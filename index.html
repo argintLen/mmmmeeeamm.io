@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesaje Interactive</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        .message-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 20px;
+            font-size: 24px;
+            transition: background 0.3s;
+            position: relative; /* Important pentru a plasa corect inimioarele */
+            z-index: 10; /* Asigură-te că este în fața altor elemente */
+        }
+        .message-box:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .heart {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+            background: url(poze/мем.jpg) no-repeat center;
+            background-size: contain;
+            animation: neonGlow 1.5s infinite alternate ease-in-out;
+            z-index: 1; /* Plasează-l în fundal */
+        }
+        @keyframes neonGlow {
+            0% { filter: drop-shadow(0 0 5px red) drop-shadow(0 0 10px red); }
+            100% { filter: drop-shadow(0 0 20px red) drop-shadow(0 0 40px red); }
+        }
+        .floating-heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            animation: float 5s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 1; }
+            100% { transform: translateY(-10vh) translateX(calc(20px - 40px * random())); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box" onclick="nextMessage()">Apasă aici pentru primul mesaj</div>
+    <div class="heart"></div>
+    
+    <script>
+        const messages = [
+            "Hei! Știi că zâmbetul tău face lumea mai frumoasă? 😊",
+            "Dacă ai avea o superputere, sigur ar fi să împrăștii bunătate! 💫",
+            "Ești ca o rază de soare într-o zi mohorâtă! ☀",
+            "Dacă ai avea un fan club, eu aș fi președintele! 😄",
+            "Felicitări! Tocmai ai câștigat un premiu pentru cel mai frumos zâmbet! 🏆",
+            "Ești atât de minunat(ă), încât Google ar trebui să te adauge în căutările recomandate! 😂",
+            "❤ Te așteaptă ceva special..."
+        ];
+        let index = 0;
+        function nextMessage() {
+            const messageBox = document.querySelector(".message-box");
+            if (index < messages.length) {
+                messageBox.textContent = messages[index];
+                createFloatingHearts();
+                index++;
+            } else {
+                messageBox.style.display = "none";
+                document.querySelector(".heart").style.opacity = "1";
+            }
+        }
+        function createFloatingHearts() {
+            for (let i = 0; i < 10; i++) {
+                let heart = document.createElement("div");
+                heart.classList.add("floating-heart");
+                heart.textContent = "❤";
+                heart.style.left = Math.random() * window.innerWidth + "px";
+                heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
